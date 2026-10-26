@@ -1,4 +1,6 @@
 package todo.controller;
+import todo.manager.TaskManager;
+import todo.manager.TaskTypeManager;
 
 import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -9,22 +11,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
-import todo.main.*;
-
 @Controller
 public class TaskController{
 	
-	private final Manager manager;
+	private final TaskManager taskManager;
+	private final TaskTypeManager typeManager;
 	
-	public TaskController(Manager mng) {
-		manager = mng;
+	public TaskController(TaskManager taskManager, TaskTypeManager typeManager) {
+		this.taskManager = taskManager;
+		this.typeManager = typeManager;
 	}
 	
 	//タスクの管理------------------------------------------------------------------
 	@GetMapping("/")
 	public String showMain(Model model) {
-		model.addAttribute("tasks", manager.getTasks());
-		model.addAttribute("types", manager.getTaskTypes());
+		model.addAttribute("tasks", taskManager.getTasks());
+		model.addAttribute("types", typeManager.getTaskTypes());
 		return "main";
 	}
 	
@@ -34,14 +36,14 @@ public class TaskController{
 			@RequestParam(name = "deadline", required = false)	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")	LocalDateTime deadline,
 			@RequestParam(name = "memo", required = false) String memo) {
 		if(! title.equals("none")) {
-			manager.makeTask(title, typeId, deadline, memo);
+			taskManager.makeTask(title, typeManager.getType(typeId), deadline, memo);
 		}
 		return "redirect:/";
 	}
 	
 	@PostMapping("/complete")
 	public String completeTask(@RequestParam(value = "id") int id) {
-		manager.completeTask(id);
+		taskManager.completeTask(id);
 		return "redirect:/";
 	}
 	
@@ -51,42 +53,13 @@ public class TaskController{
 			@RequestParam(value = "typeId") int typeId,
 			@RequestParam(name = "deadline", required = false)	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")	LocalDateTime deadline,
 			@RequestParam(name = "memo", required = false) String memo) {
-		manager.editTask(id, title,typeId, deadline, memo);
+		taskManager.editTask(id, title,typeManager.getType(typeId), deadline, memo);
 		return "redirect:/";
 	}
 	
 	@PostMapping("/delete")
 	public String deleteTask(@RequestParam(value = "id") int id) {
-		manager.deleteTask(id);
+		taskManager.deleteTask(id);
 		return "redirect:/";
-	}
-	
-	//種別の管理------------------------------------------------------------------
-	@GetMapping("/setType")
-	public String showTaskType(Model model) {
-		model.addAttribute("types", manager.getTaskTypes());
-		return "type";
-	}
-	
-	@PostMapping("/addType")
-	public String addType(@RequestParam(value = "name") String name) {
-		manager.makeType(name);
-		return "redirect:/setType";
-	}
-	
-	@PostMapping("/deleteType")
-	public String deleteType(Model model, @RequestParam(value = "id") int id) {
-		boolean deleted = manager.deleteType(id);
-		if (!deleted) {
-	        model.addAttribute("errorMessage", "この種別はタスクで使用されているため削除できません。");
-	    }
-		model.addAttribute("types", manager.getTaskTypes());
-		return "type";
-	}
-	
-	@PostMapping("/editType")
-	public String editType(@RequestParam(value = "id") int id, @RequestParam(value = "name") String name) {
-			manager.editType(id, name);
-		return "redirect:/setType";
 	}
 }
