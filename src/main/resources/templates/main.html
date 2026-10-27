@@ -36,18 +36,25 @@
 	</style>
 </head>
 <body>
-	<div style="display: flex; justify-content: space-between;">
+	<div style="display: flex; justify-content: space-between; align-items:center;">
 		<h1>ToDoリスト</h1>
-		<form th:action="@{/logout}" method="post">
-		    <button type="submit">ログアウト</button>
-		</form>
+		<div>
+		    <span th:text="'ユーザー名：' + ${username}" style="display: flex; margin-right: 20px;"></span>
+		    <form th:action="@{/logout}" method="post" style="display: flex; margin-left: 20px;">
+		        <button type="submit">ログアウト</button>
+		    </form>
+		</div>
 	</div>
 	<hr>
 
    
     <!-- ToDo一覧 -->
 	<h2>タスク一覧
-		<button type="button" id="addButton" style="display:inline">＋ 追加</button>
+		<button type="button" id="addButton" style="font-size: 14px; font-weight: normal; margin-left: 20px;">
+			＋ 追加</button>
+		<button type="button" onclick="location.href='/setType'" 
+			style="font-size: 14px; font-weight: normal; margin-left: 20px;">
+			種別を設定	</button>
 	</h2>
 
     <table>

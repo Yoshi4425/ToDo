@@ -2,6 +2,8 @@ package todo.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
@@ -12,13 +14,18 @@ public class TaskType {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private int id; //JPAによる自動採番
 	
+	@ManyToOne
+	@JoinColumn(name = "account_id", nullable = false)
+	private Account user;
+	
 	private String name;
 	
 	//JPA用の空コンストラクタ
 	public TaskType() {
 	}
 	
-	public TaskType(String name) {
+	public TaskType(Account user, String name) {
+		this.user = user;
 		editName(name);
 	}
 	

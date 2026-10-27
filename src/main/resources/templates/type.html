@@ -6,7 +6,16 @@
 </head>
 
 <body>
-	<h1>種別設定</h1><hr>
+	<div style="display: flex; justify-content: space-between; align-items:center;">
+		<h1>種別設定</h1>
+		<div>
+		    <span th:text="'ユーザー名：' + ${username}" style="display: flex; margin-right: 20px;"></span>
+		    <form th:action="@{/logout}" method="post" style="display: flex; margin-left: 20px;">
+		        <button type="submit">ログアウト</button>
+		    </form>
+		</div>
+	</div>
+	<hr>
 
    
     <!-- ToDo一覧 -->

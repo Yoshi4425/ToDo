@@ -16,6 +16,10 @@ public class Task {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private int id; //JPAによる自動採番
 	
+	@ManyToOne
+	@JoinColumn(name = "account_id", nullable = false)
+	private Account user;
+	
 	private String title;
 	
 	@ManyToOne
@@ -30,8 +34,9 @@ public class Task {
 	public Task() {
 	}
 	
-	public Task(String title, TaskType type, LocalDateTime deadline, String memo) {
+	public Task(Account user, String title, TaskType type, LocalDateTime deadline, String memo) {
 		editTask(title, type, deadline, memo);
+		this.user = user;
 		complete = false;
 	}
 	

@@ -25,4 +25,8 @@ public class AccountManager {
 		return repository.existsByUsername(username);
 	}
 	
+	public Account getAccount(String username) {
+		return repository.findByUsername(username).orElse(null);
+	}
+	
 }
