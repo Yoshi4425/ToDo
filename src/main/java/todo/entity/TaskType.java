@@ -19,7 +19,7 @@ public class TaskType {
 	}
 	
 	public TaskType(String name) {
-		this.name = name;
+		editName(name);
 	}
 	
 	public void editName(String name) {

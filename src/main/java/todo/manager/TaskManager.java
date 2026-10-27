@@ -10,41 +10,41 @@ import org.springframework.stereotype.Service;
 @Service
 public class TaskManager {
 	
-	private final TaskRepository taskRepository;
+	private final TaskRepository repository;
 	
-	public TaskManager(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+	public TaskManager(TaskRepository repository) {
+        this.repository = repository;
     }
 	
 	//タスクの管理-------------------------------------------------------------------------
 	public void makeTask(String title, TaskType type, LocalDateTime deadline, String memo) {
 		Task task = new Task(title, type, deadline, memo);
-		taskRepository.save(task);
+		repository.save(task);
 	}
 	
 	public void completeTask(int id) {
-		taskRepository.findById(id).ifPresent(task -> {
+		repository.findById(id).ifPresent(task -> {
             task.changeComplete();
-            taskRepository.save(task);
+            repository.save(task);
         });
 	}
 	
 	public void editTask(int id, String title, TaskType type, LocalDateTime deadline, String memo) {
-		taskRepository.findById(id).ifPresent(task -> {
+		repository.findById(id).ifPresent(task -> {
             task.editTask(title, type, deadline, memo);
-            taskRepository.save(task);
+            repository.save(task);
         });
 	}
 	
 	public void deleteTask(int id) {
-		taskRepository.deleteById(id);
+		repository.deleteById(id);
 	}
 	
 	public boolean checkUsedTaskType(int typeId) {
-		return taskRepository.existsByType_Id(typeId);
+		return repository.existsByType_Id(typeId);
 	}
 	
 	public List<Task> getTasks() {
-		return taskRepository.findAll();
+		return repository.findAll();
 	}
 }

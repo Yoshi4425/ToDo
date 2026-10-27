@@ -31,11 +31,8 @@ public class Task {
 	}
 	
 	public Task(String title, TaskType type, LocalDateTime deadline, String memo) {
-		this.title = title;
-		this.type = type;
-		this.deadline = deadline;
+		editTask(title, type, deadline, memo);
 		complete = false;
-		this.memo = memo;
 	}
 	
 	public void changeComplete() {
