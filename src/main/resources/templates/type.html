@@ -17,7 +17,7 @@
 		</button>
 	</h2>
 	
-	<form action="/addType" method="post">
+	<form th:action="@{/addType}" method="post">
 	    <input type="text" name="name" style="width: 25em;"  maxlength="20" placeholder="種別名を入力（20文字まで）" required>
 		<button type="submit">＋追加</button>
 	</form>
@@ -38,7 +38,7 @@
 						th:data-name="${type.name}"
 					> 編集 </button>
 								
-					<form action="/deleteType" method="post" style="display:inline">
+					<form th:action="@{/deleteType}" method="post" style="display:inline">
 					    <input type="hidden" name="id" th:value="${type.id}">
 					    <button type="submit">削除</button>
 					</form>
@@ -52,6 +52,9 @@
 	    <h2>種別の編集</h2>
 
 	    <form id="typeForm" method="post">
+			<input type="hidden"
+			th:name="${_csrf.parameterName}"
+			th:value="${_csrf.token}">
 	        <input type="hidden" id="id" name="id">
 	        <input type="text" id="name" name="name" style="width: 25em;" maxlength="20" 
 			placeholder="種別名を変更（20文字まで）" required>

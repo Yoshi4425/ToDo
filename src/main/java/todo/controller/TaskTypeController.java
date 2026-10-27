@@ -27,23 +27,26 @@ public class TaskTypeController{
 	}
 	
 	@PostMapping("/addType")
-	public String addType(@RequestParam(value = "name") String name) {
-		typeManager.makeType(name);
-		return "redirect:/setType";
+	public String addType(Model model, @RequestParam(value = "name") String name) {
+		if (name.isBlank()) {
+			model.addAttribute("errorMessage", "空文字は使用できません。");
+			return showTaskType(model);
+		}else {
+			typeManager.makeType(name);
+			return "redirect:/setType";
+		}
 	}
 	
 	@PostMapping("/deleteType")
 	public String deleteType(Model model, @RequestParam(value = "id") int id) {
 		if (taskManager.checkUsedTaskType(id)) {
 			model.addAttribute("errorMessage", "この種別はタスクで使用されているため削除できません。");
+			return showTaskType(model);
 		}else {
 			typeManager.deleteType(id);
+			return "redirect:/setType";
 		}
-		
-		model.addAttribute("types", typeManager.getTaskTypes());
-		return "type";
-	}
-	
+	}	
 	@PostMapping("/editType")
 	public String editType(@RequestParam(value = "id") int id, @RequestParam(value = "name") String name) {
 			typeManager.editType(id, name);

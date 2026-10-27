@@ -31,14 +31,19 @@ public class TaskController{
 	}
 	
 	@PostMapping("/add")
-	public String makeTask(@RequestParam(value = "title", defaultValue = "none") String title,
+	public String makeTask(Model model,
+			@RequestParam(value = "title") String title,
 			@RequestParam(value = "typeId") int typeId,
 			@RequestParam(name = "deadline", required = false)	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")	LocalDateTime deadline,
 			@RequestParam(name = "memo", required = false) String memo) {
-		if(! title.equals("none")) {
+		
+		if(title.isBlank()) {
+			model.addAttribute("errorMessage", "空文字は使用できません。");
+			return showMain(model);
+		}else {
 			taskManager.makeTask(title, typeManager.getType(typeId), deadline, memo);
+			return "redirect:/";
 		}
-		return "redirect:/";
 	}
 	
 	@PostMapping("/complete")
@@ -48,13 +53,20 @@ public class TaskController{
 	}
 	
 	@PostMapping("/edit")
-	public String editTask(@RequestParam(value = "id") int id, 
+	public String editTask(Model model,
+			@RequestParam(value = "id") int id, 
 			@RequestParam(value = "title") String title,
 			@RequestParam(value = "typeId") int typeId,
 			@RequestParam(name = "deadline", required = false)	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")	LocalDateTime deadline,
 			@RequestParam(name = "memo", required = false) String memo) {
-		taskManager.editTask(id, title,typeManager.getType(typeId), deadline, memo);
-		return "redirect:/";
+		
+		if(title.isBlank()) {
+			model.addAttribute("errorMessage", "空文字は使用できません。");
+			return showMain(model);
+		}else {
+			taskManager.editTask(id, title,typeManager.getType(typeId), deadline, memo);
+			return "redirect:/";
+		}	
 	}
 	
 	@PostMapping("/delete")
