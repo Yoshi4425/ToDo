@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.JoinColumn;
 
+//データベースに登録されるタスクデータ
 @Entity
 public class Task {
 	
@@ -16,18 +17,26 @@ public class Task {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private int id; //JPAによる自動採番
 	
-	@ManyToOne
+	//権限を持つユーザー
+	@ManyToOne //複数タスクからの指定が可能
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account user;
 	
+	//タスク名
 	private String title;
 	
+	//種別
 	@ManyToOne
 	@JoinColumn(name = "task_type_id")
 	private TaskType type;
 	
+	//締め切り
 	private LocalDateTime deadline;
+	
+	//完了、未完了
 	private boolean complete;
+	
+	//メモ
 	private String memo;
 	
 	//JPA用の空コンストラクタ
@@ -40,10 +49,12 @@ public class Task {
 		complete = false;
 	}
 	
+	//完了処理　状態を入れ替える
 	public void changeComplete() {
 		complete = !complete;
 	}
 	
+	//タスクの編集、追加にも使用する
 	public void editTask(String title, TaskType type, LocalDateTime deadline, String memo) {
 		this.title = title;
 		this.type = type;

@@ -7,6 +7,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 
+//データベースに登録される種別データ
 @Entity
 public class TaskType {
 	
@@ -14,10 +15,12 @@ public class TaskType {
 	@GeneratedValue(strategy =  GenerationType.IDENTITY)
 	private int id; //JPAによる自動採番
 	
+	//権限を持つアカウント
 	@ManyToOne
 	@JoinColumn(name = "account_id", nullable = false)
 	private Account user;
 	
+	//種別名
 	private String name;
 	
 	//JPA用の空コンストラクタ
@@ -29,6 +32,7 @@ public class TaskType {
 		editName(name);
 	}
 	
+	//種別の編集、追加にも使用
 	public void editName(String name) {
 		this.name = name;
 	}

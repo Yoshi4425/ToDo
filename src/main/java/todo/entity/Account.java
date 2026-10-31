@@ -2,15 +2,18 @@ package todo.entity;
 
 import jakarta.persistence.*;
 
+//データベースに登録されるアカウント名
 @Entity
 public class Account {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+	//ユーザー名
     @Column(nullable = false, unique = true)
     private String username;
 
+    //パスワード
     @Column(nullable = false)
     private String password;
     

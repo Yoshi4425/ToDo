@@ -1,0 +1,39 @@
+.pageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.userArea {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.userArea button {
+    margin-right: 20px;
+}
+
+.username {
+    display: flex;
+    margin-right: 20px;
+}
+
+.logoutForm {
+    display: flex;
+    margin-left: 20px;
+}
+
+.headingButton {
+    font-size: 14px;
+    font-weight: normal;
+    margin-left: 20px;
+}
+
+.inlineForm {
+    display: inline;
+}
+
+.errorMessage {
+    color: red;
+}

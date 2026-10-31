@@ -8,8 +8,10 @@
 <body>
 	<h1>ユーザー登録</h1><hr>
    
-	<p th:if="${errorMessage}" th:text="${errorMessage}" style="color:red"></p>
+	<!-- べた書きのメッセージ -->
+	<p th:if="${errorMessage}" th:text="${errorMessage}" class="errorMessage"></p>
 		
+	<!-- ユーザー登録フォーム -->
 	<form th:action="@{/register}" method="post">
 	        <div>
 	            <label for="username">ユーザー名</label>
@@ -25,7 +27,8 @@
 
 	        <button type="submit">登録</button>
 	    </form>
-
+		
+		<!-- ログイン登録へのリンク -->
 	    <p><a href="/login">ログインはこちら</a></p>
 	</body>
 </html>

@@ -14,11 +14,13 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+	//パスワード暗号化
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    //ログイン操作
     @Bean
     public UserDetailsService userDetailsService(
             AccountRepository repository) {
@@ -36,28 +38,34 @@ public class SecurityConfig {
         };
     }
 
+    //セキュリティの設定
     @Bean
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http) throws Exception {
 
         http
+        	//ログインなしでアクセスできるリンク
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/register", "/login", "/error", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
             )
+            //ログイン用のページとログイン後に飛ぶページを指定
             .formLogin(form -> form
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
                 .defaultSuccessUrl("/", true)
                 .permitAll()
             )
+            //ログアウト時のURL
             .logout(logout -> logout
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
             )
+            //コンソールへのアクセスを許可
 	        .csrf(csrf -> csrf
 	            .ignoringRequestMatchers("/h2-console/**")
 	        )
+	        //コンソール表示のための許可
 	        .headers(headers -> headers
 	            .frameOptions(frame -> frame.sameOrigin())
 	        );
